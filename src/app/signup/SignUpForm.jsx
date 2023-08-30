@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye } from "react-icons/fa";
+import createJWT from "@/utils/createJWT";
+import { useRouter, useSearchParams } from "next/navigation";
+// import { useRouter } from "next/router";
 
 const SignUpForm = () => {
   const { createUser, profileUpdate, googleLogin } = useAuth();
@@ -12,6 +15,9 @@ const SignUpForm = () => {
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
   };
+  const search = useSearchParams();
+  const from = search.get("redirectUrl") || "/";
+  const { replace } = useRouter();
 
   const {
     register,
@@ -23,11 +29,11 @@ const SignUpForm = () => {
     getValues,
   } = useForm();
 
-  const uploadImage = async (e) => {
+  const uploadImage = async (event) => {
     const formData = new FormData();
-    if (!e.target.file[0]) return;
-    formData.append("image", e.target.files[0]);
-    const toastId = toast.loading("Image Uploading...");
+    if (!event.target.files[0]) return;
+    formData.append("image", event.target.files[0]);
+    const toastId = toast.loading("Image uploading...");
     try {
       const res = await fetch(
         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
@@ -38,6 +44,7 @@ const SignUpForm = () => {
       );
       if (!res.ok) throw new Error("Faild to upload image");
       const data = await res.json();
+      console.log(data);
       toast.dismiss(toastId);
       toast.success("iMage uploaded successfully!");
       setValue("photo", data.data.url);
@@ -48,17 +55,20 @@ const SignUpForm = () => {
   };
 
   const onSubmit = async (data) => {
-    const { email, password, name, photo } = data;
+    const { name, email, password, photo } = data;
+
     const toastId = toast.loading("Loading....");
     try {
       const user = await createUser(email, password);
+      await createJWT({ email });
       await profileUpdate({
         displayName: name,
         photoURL: photo,
       });
       toast.dismiss(toastId);
       toast.success("User signed in successfully");
-      reset();
+      replace(from);
+      // reset();
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || "User noat signed in");
@@ -68,9 +78,11 @@ const SignUpForm = () => {
   const handleGoogleLogin = async () => {
     const toastId = toast.loading("Loading....");
     try {
-      const user = await googleLogin();
+      const { user } = await googleLogin();
+      createJWT({ email: user.email });
       toast.dismiss(toastId);
       toast.success("User signed in successfully");
+      replace(from);
     } catch (error) {
       toast.dismiss(toastId);
       toast.error(error.message || "User not signed in");
@@ -165,9 +177,9 @@ const SignUpForm = () => {
           <input
             type="file"
             id="photo"
+            required
             onChange={uploadImage}
             className="file-input file-input-bordered file-input-[#00000] w-full"
-            {...register("photo", { required: true })}
           />
         </div>
         <div className="w-full pt-3">

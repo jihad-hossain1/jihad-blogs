@@ -1,0 +1,72 @@
+[
+{
+    "name": "Book",
+    "imageUrl": "https://i.ibb.co/JvsZpvy/ad4afcd91d-01.gif",
+    "categoryId": 2
+}
+,
+{
+    "name": "Beverage",
+    "imageUrl": "https://i.ibb.co/6PFGFvL/ad4afcd91d-02.gif",
+    "categoryId": 3
+},
+{
+    "name": "NonFood & Pharmacy",
+    "imageUrl": "https://i.ibb.co/tx9FN08/ad4afcd91d-03.gif",
+    "categoryId": 1
+},
+{
+    "name": "Produce & Foods",
+    "imageUrl": "https://i.ibb.co/0YNBjsd/ad4afcd91d-04.gif",
+    "categoryId": 1
+},
+{
+    "name": "Meat",
+    "imageUrl": "https://i.ibb.co/255XFpt/ad4afcd91d-05.gif"
+}
+,
+{
+    "name": "Seafood",
+    "imageUrl": "https://i.ibb.co/wRDg2K6/ad4afcd91d-06.gif"
+}
+,
+{
+    "name": "Vegetable",
+    "imageUrl": "https://i.ibb.co/1XYWHHL/ad4afcd91d-08.png"
+}
+,
+{
+    "name": "Fish",
+    "imageUrl": "https://i.ibb.co/JHrH5H4/ad4afcd91d-07.gif",
+    "categoryId": 4
+},
+[
+    {
+        "name": "Fish 3",
+    "imageUrl": "https://i.ibb.co/JHrH5H4/ad4afcd91d-07.gif",
+    "categoryId": 3,
+    "price": 234
+    },
+    {
+        "name": "fish 2",
+    "imageUrl": "https://i.ibb.co/1XYWHHL/ad4afcd91d-08.png",
+    "categoryId": 2,
+    "price": 3434
+    },
+    {
+        "title": "fish 5",
+    "imageUrl": "https://i.ibb.co/255XFpt/ad4afcd91d-05.gif",
+    "categoryId": "64ec221d8aa54f5a8c29db0c",
+    "price": 34345
+    }
+]
+]
+
+
+
+
+
+
+
+
+
