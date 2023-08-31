@@ -1,4 +1,5 @@
-import { getProductById } from '@/services/product.service';
+// import { getProductById } from '@/services/product.service';
+import { getProductsByIdFromDb } from '@/services/product.service';
 import { request } from 'http';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -9,7 +10,7 @@ export const GET = async (request) => {
         const cookie = request.cookies.get('cart')?.value;
         if (!cookie) return NextResponse.json({ cart: [] });
         const cartObj = JSON.parse(cookie);
-        const products = await getProductById(Object.keys(cartObj));
+        const products = await getProductsByIdFromDb(Object.keys(cartObj));
         const cart = products.map((product) => {
             return {
                 ...product,

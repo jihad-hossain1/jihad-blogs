@@ -2,7 +2,7 @@
 
 import { afterLoginNavData, beforeLoginNavData } from "@/data/navData";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import NavLink from "./NavLink";
 import useTheme from "@/hooks/useThemecontext";
 import useAuth from "@/hooks/useAuth";
@@ -10,20 +10,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
-
-const cart = [{ id: 1 }];
-const total = [{ id: 11 }];
+import useCart from "@/hooks/useCart";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const { uid, displayName, photoURL } = user || {};
   const navData = uid ? afterLoginNavData : beforeLoginNavData;
-  // const { cart } =
+
   const { theme, toggleTheme } = useTheme();
   const { replace } = useRouter();
   const path = usePathname();
 
   const [navToggle, setNavToggle] = useState(false);
+  const { cart } = useCart();
+  const total = useMemo(
+    () => cart.reduce((pre, cur) => cur.price * cur.quantity + pre, 0),
+    [cart]
+  );
 
   const handleLogout = async () => {
     try {
@@ -44,7 +47,7 @@ const Navbar = () => {
     <nav className="navbar sticky top-0 z-10 bg-slate-200 shadow-lg dark:bg-slate-900 lg:pr-3">
       <div className="flex-1">
         <Link href="/" className="btn-ghost btn text-2xl normal-case">
-          Easy Shop
+          Jihad Blogs
         </Link>
       </div>
       <div
@@ -84,7 +87,7 @@ const Navbar = () => {
                 />
               </svg>
               <span className="badge badge-sm indicator-item bg-primary text-white dark:text-gray-300">
-                {cart?.length}
+                {cart.length}
               </span>
             </div>
           </label>
@@ -93,8 +96,8 @@ const Navbar = () => {
             className="card dropdown-content card-compact mt-3 w-52 bg-base-100 shadow"
           >
             <div className="card-body">
-              <span className="text-lg font-bold">{cart?.length} Items</span>
-              {/* <span className="text-info">Total: ${total?.toFixed(2)}</span> */}
+              <span className="text-lg font-bold">{cart.length} Items</span>
+              <span className="text-info">Total: ${total.toFixed(2)}</span>
               <div className="card-actions">
                 <Link href="/checkout" className="block w-full">
                   <button className="btn-primary btn-block btn">
